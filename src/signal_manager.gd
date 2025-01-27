@@ -1,0 +1,18 @@
+extends Node
+
+@warning_ignore("unused_signal")
+signal mailboxHoverOn(mailbox: Mailbox)
+@warning_ignore("unused_signal")
+signal mailboxHoverOff(mailbox: Mailbox)
+@warning_ignore("unused_signal")
+signal packageHoverOn(package: Package)
+@warning_ignore("unused_signal")
+signal packageHoverOff(package: Package)
+@warning_ignore("unused_signal")
+signal playerStartThrow(sweetspotStart: float, sweetspotLength: float, timerLength: float)
+@warning_ignore("unused_signal")
+signal playerStopThrow()
+@warning_ignore("unused_signal")
+signal throwEnvelope(envelope: Node3D, thrower: Node3D, target: Node3D, throw_target_offset: Vector3)
+@warning_ignore("unused_signal")
+signal envelopeDelivered(deliverer: Node3D, envelope: Envelope, recipient: Node3D)

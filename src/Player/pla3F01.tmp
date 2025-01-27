@@ -1,0 +1,174 @@
+[gd_scene load_steps=21 format=3 uid="uid://bot2qowbjssij"]
+
+[ext_resource type="Script" path="res://src/Player/spring_arm_pivot.gd" id="1_m3hfy"]
+[ext_resource type="Script" path="res://src/Player/player.gd" id="1_sk863"]
+[ext_resource type="PackedScene" uid="uid://cf1io1cbrdpws" path="res://src/Delivery/envelope.tscn" id="2_3ktye"]
+[ext_resource type="PackedScene" uid="uid://d3l7qdgxphdah" path="res://res/models/mailbot.glb" id="3_ighws"]
+[ext_resource type="Script" path="res://src/Player/player_ray.gd" id="4_0ff0t"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_y0tnu"]
+radius = 0.25
+height = 1.85
+
+[sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_fn0vl"]
+length = 0.2
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_68k2v"]
+animation = &"Jump"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_cg0ga"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_twgwe"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_bdlmd"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_y82rh"]
+animation = &"Run"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_0o12p"]
+
+[sub_resource type="AnimationNodeBlend3" id="AnimationNodeBlend3_qqbkl"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_732q3"]
+animation = &"Throw_Follow"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pwfnf"]
+animation = &"Throw_Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_43wfv"]
+animation = &"Throw_Run"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_wilkl"]
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_7jal6"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_iamef"]
+graph_offset = Vector2(218.639, -331.722)
+nodes/Air/node = SubResource("AnimationNodeAnimation_68k2v")
+nodes/Air/position = Vector2(600, 300)
+nodes/GroundAirBlend/node = SubResource("AnimationNodeBlend2_cg0ga")
+nodes/GroundAirBlend/position = Vector2(1860, 160)
+nodes/Idle/node = SubResource("AnimationNodeAnimation_twgwe")
+nodes/Idle/position = Vector2(240, 100)
+nodes/IdleRunBlend/node = SubResource("AnimationNodeBlend2_bdlmd")
+nodes/IdleRunBlend/position = Vector2(600, 80)
+nodes/Run/node = SubResource("AnimationNodeAnimation_y82rh")
+nodes/Run/position = Vector2(240, 260)
+nodes/ThrowActionBlend/node = SubResource("AnimationNodeBlend2_0o12p")
+nodes/ThrowActionBlend/position = Vector2(1660, -60)
+nodes/ThrowBlend/node = SubResource("AnimationNodeBlend3_qqbkl")
+nodes/ThrowBlend/position = Vector2(1060, -280)
+nodes/ThrowFollow/node = SubResource("AnimationNodeAnimation_732q3")
+nodes/ThrowFollow/position = Vector2(600, -380)
+nodes/ThrowIdle/node = SubResource("AnimationNodeAnimation_pwfnf")
+nodes/ThrowIdle/position = Vector2(600, -220)
+nodes/ThrowRun/node = SubResource("AnimationNodeAnimation_43wfv")
+nodes/ThrowRun/position = Vector2(600, -80)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_7jal6")
+nodes/TimeScale/position = Vector2(400, 240)
+"nodes/TimeScale 2/node" = SubResource("AnimationNodeTimeScale_wilkl")
+"nodes/TimeScale 2/position" = Vector2(820, -380)
+nodes/output/position = Vector2(2180, 20)
+node_connections = [&"GroundAirBlend", 0, &"ThrowActionBlend", &"GroundAirBlend", 1, &"Air", &"IdleRunBlend", 0, &"Idle", &"IdleRunBlend", 1, &"TimeScale", &"ThrowActionBlend", 0, &"ThrowBlend", &"ThrowActionBlend", 1, &"IdleRunBlend", &"ThrowBlend", 0, &"TimeScale 2", &"ThrowBlend", 1, &"ThrowIdle", &"ThrowBlend", 2, &"ThrowRun", &"TimeScale", 0, &"Run", &"TimeScale 2", 0, &"ThrowFollow", &"output", 0, &"GroundAirBlend"]
+
+[node name="player" type="CharacterBody3D" node_paths=PackedStringArray("player_mesh", "spring_arm_pivot", "animation_tree", "camera", "raycast", "hand_attachment")]
+script = ExtResource("1_sk863")
+player_mesh = NodePath("Mesh")
+spring_arm_pivot = NodePath("SpringArmPivot")
+animation_tree = NodePath("AnimationTree")
+camera = NodePath("SpringArmPivot/SpringArm3D/Camera3D")
+raycast = NodePath("RayCast3D")
+envelope = ExtResource("2_3ktye")
+hand_attachment = NodePath("Mesh/Armature/Skeleton3D/HandAttachment")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.925, 0)
+shape = SubResource("CapsuleShape3D_y0tnu")
+
+[node name="SpringArmPivot" type="Node3D" parent="." node_paths=PackedStringArray("spring_arm", "camera")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_m3hfy")
+spring_arm = NodePath("SpringArm3D")
+camera = NodePath("SpringArm3D/Camera3D")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="SpringArmPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0)
+shape = SubResource("SeparationRayShape3D_fn0vl")
+spring_length = 3.5
+
+[node name="Camera3D" type="Camera3D" parent="SpringArmPivot/SpringArm3D"]
+fov = 70.0
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../Mesh")
+tree_root = SubResource("AnimationNodeBlendTree_iamef")
+anim_player = NodePath("../Mesh/AnimationPlayer")
+parameters/GroundAirBlend/blend_amount = 0
+parameters/IdleRunBlend/blend_amount = 0.0
+parameters/ThrowActionBlend/blend_amount = 0
+parameters/ThrowBlend/blend_amount = 0
+parameters/TimeScale/scale = 1.3
+"parameters/TimeScale 2/scale" = 1.98
+
+[node name="Mesh" parent="." instance=ExtResource("3_ighws")]
+
+[node name="Skeleton3D" parent="Mesh/Armature" index="0"]
+bones/0/position = Vector3(2.66893e-10, 0.65655, 0.0537008)
+bones/0/rotation = Quaternion(-4.80516e-09, 0.997973, -0.0636462, 7.53448e-08)
+bones/0/scale = Vector3(1, 1, 1)
+bones/1/rotation = Quaternion(-0.162396, -0.176215, 0.0300731, 0.970398)
+bones/2/rotation = Quaternion(0.119109, 0.000194755, 0.00152871, 0.99288)
+bones/3/rotation = Quaternion(-0.0580337, 0.192352, -0.011396, 0.979542)
+bones/4/rotation = Quaternion(-0.0324529, -0.0128495, -0.812307, 0.582184)
+bones/4/scale = Vector3(1, 1, 1)
+bones/5/rotation = Quaternion(0.375131, 0.462297, 0.0179852, 0.803265)
+bones/6/rotation = Quaternion(0.603673, -0.0511333, 0.482693, 0.632433)
+bones/6/scale = Vector3(1, 1, 1)
+bones/7/rotation = Quaternion(-0.0993705, -0.146422, 0.428909, 0.885846)
+bones/7/scale = Vector3(1, 1, 1)
+bones/8/rotation = Quaternion(-2.06725e-08, 8.78731e-08, -0.248409, 0.968655)
+bones/9/rotation = Quaternion(-8.23285e-09, -9.48013e-08, 0.0514985, 0.998673)
+bones/10/rotation = Quaternion(-1.93699e-07, -5.16164e-08, -0.0875684, 0.996158)
+bones/11/rotation = Quaternion(0.189443, 0.0368885, -0.326086, 0.925429)
+bones/12/rotation = Quaternion(-0.0462965, 0.00288427, 0.812591, 0.580985)
+bones/12/scale = Vector3(1, 1, 1)
+bones/13/rotation = Quaternion(0.158549, 0.624009, -0.122097, 0.755359)
+bones/14/rotation = Quaternion(0.782733, 0.162707, 0.107795, 0.590962)
+bones/14/scale = Vector3(1, 1, 1)
+bones/15/rotation = Quaternion(-0.0957888, 0.0150112, -0.0536949, 0.993839)
+bones/16/rotation = Quaternion(-0.016606, 0.323156, 0.0493055, 0.944915)
+bones/17/rotation = Quaternion(0.00257252, 0.0140588, 0.20312, 0.97905)
+bones/18/rotation = Quaternion(-9.55418e-05, 0.0236846, 0.0602537, 0.997902)
+bones/19/rotation = Quaternion(0.110093, -0.74238, -0.021495, 0.660522)
+bones/20/rotation = Quaternion(0.0580994, 0.320751, 0.940753, -0.0934247)
+bones/20/scale = Vector3(1, 1, 0.999997)
+bones/21/rotation = Quaternion(-0.455249, -6.94873e-09, -1.12943e-08, 0.890364)
+bones/22/rotation = Quaternion(0.763043, -0.180416, 0.00170998, 0.620655)
+bones/22/scale = Vector3(1, 1, 1)
+bones/23/rotation = Quaternion(-0.287472, 0.0901909, 0.945842, 0.120866)
+bones/23/scale = Vector3(1, 1, 0.999997)
+bones/24/rotation = Quaternion(-0.357933, -1.85114e-08, 6.86183e-09, 0.933747)
+bones/25/rotation = Quaternion(0.837226, 0.0667226, 0.0707197, 0.538144)
+bones/25/scale = Vector3(1, 1, 1)
+bones/26/position = Vector3(-0.196929, 0.513757, -0.389043)
+bones/27/position = Vector3(-0.203274, 0.0703229, 0.0385828)
+bones/27/rotation = Quaternion(0.127978, 0.679147, 0.695429, -0.196874)
+bones/28/position = Vector3(0.453686, 0.513757, -0.389043)
+bones/29/position = Vector3(0.140977, 0.0703229, 0.282194)
+bones/29/rotation = Quaternion(-0.210355, 0.663042, 0.675093, 0.245714)
+
+[node name="HandAttachment" type="BoneAttachment3D" parent="Mesh/Armature/Skeleton3D" index="1"]
+transform = Transform3D(0.68743, -0.0278962, -0.725715, 0.109347, 0.991846, 0.0654526, 0.717972, -0.124349, 0.684875, 0.453059, 1.58776, 0.212673)
+bone_name = "Carpal.R"
+bone_idx = 16
+
+[node name="RayCast3D" type="RayCast3D" parent="." node_paths=PackedStringArray("spring_arm", "pivot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000704408, 1.6484, -0.000567436)
+target_position = Vector3(0, 0, -10)
+collide_with_areas = true
+script = ExtResource("4_0ff0t")
+spring_arm = NodePath("../SpringArmPivot/SpringArm3D")
+pivot = NodePath("../SpringArmPivot")
+
+[editable path="Mesh"]

@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://cf1io1cbrdpws"]
+
+[ext_resource type="PackedScene" uid="uid://cvrs2xy6qm30l" path="res://res/models/delivery/envelope.glb" id="1_024fw"]
+[ext_resource type="Script" path="res://src/Delivery/envelope.gd" id="1_jxptm"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jjdb0"]
+size = Vector3(0.2, 0.01, 0.1)
+
+[node name="Envelope" type="Node3D"]
+script = ExtResource("1_jxptm")
+
+[node name="Mesh" parent="." instance=ExtResource("1_024fw")]
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_jjdb0")
+
+[editable path="Mesh"]

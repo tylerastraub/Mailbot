@@ -1,0 +1,224 @@
+[gd_scene load_steps=25 format=3 uid="uid://bot2qowbjssij"]
+
+[ext_resource type="Script" path="res://src/Player/spring_arm_pivot.gd" id="1_m3hfy"]
+[ext_resource type="Script" path="res://src/Player/player.gd" id="1_sk863"]
+[ext_resource type="PackedScene" uid="uid://cf1io1cbrdpws" path="res://src/Delivery/envelope.tscn" id="2_3ktye"]
+[ext_resource type="PackedScene" uid="uid://d3l7qdgxphdah" path="res://res/models/mailbot.glb" id="3_ighws"]
+[ext_resource type="Script" path="res://src/Player/player_ray.gd" id="4_0ff0t"]
+[ext_resource type="PackedScene" uid="uid://cuk7t54yg8xrm" path="res://src/Player/laser.tscn" id="6_86g0x"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_y0tnu"]
+radius = 0.3
+height = 1.85
+
+[sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_fn0vl"]
+length = 0.2
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_cg0ga"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_twgwe"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeBlend3" id="AnimationNodeBlend3_8whct"]
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_bdlmd"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_68k2v"]
+animation = &"Jump"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_mcigd"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_u6cob"]
+animation = &"Package_Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_keru1"]
+animation = &"Package_Jump"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_uys7o"]
+animation = &"Package_Run"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_y82rh"]
+animation = &"Run"
+
+[sub_resource type="AnimationNodeBlend3" id="AnimationNodeBlend3_o7dtc"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pwfnf"]
+animation = &"Throw_Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_43wfv"]
+animation = &"Throw_Run"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_7jal6"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_iamef"]
+graph_offset = Vector2(239, -13)
+nodes/GroundAirBlend/node = SubResource("AnimationNodeBlend2_cg0ga")
+nodes/GroundAirBlend/position = Vector2(1500, -40)
+nodes/Idle/node = SubResource("AnimationNodeAnimation_twgwe")
+nodes/Idle/position = Vector2(160, -480)
+nodes/IdleBlend/node = SubResource("AnimationNodeBlend3_8whct")
+nodes/IdleBlend/position = Vector2(580, -420)
+nodes/IdleRunBlend/node = SubResource("AnimationNodeBlend2_bdlmd")
+nodes/IdleRunBlend/position = Vector2(1160, -280)
+nodes/Jump/node = SubResource("AnimationNodeAnimation_68k2v")
+nodes/Jump/position = Vector2(1100, 40)
+nodes/JumpBlend/node = SubResource("AnimationNodeBlend2_mcigd")
+nodes/JumpBlend/position = Vector2(1300, 120)
+nodes/PackageIdle/node = SubResource("AnimationNodeAnimation_u6cob")
+nodes/PackageIdle/position = Vector2(160, -200)
+nodes/PackageJump/node = SubResource("AnimationNodeAnimation_keru1")
+nodes/PackageJump/position = Vector2(1060, 220)
+nodes/PackageRun/node = SubResource("AnimationNodeAnimation_uys7o")
+nodes/PackageRun/position = Vector2(160, 260)
+nodes/Run/node = SubResource("AnimationNodeAnimation_y82rh")
+nodes/Run/position = Vector2(160, -40)
+nodes/RunBlend/node = SubResource("AnimationNodeBlend3_o7dtc")
+nodes/RunBlend/position = Vector2(600, -20)
+nodes/ThrowIdle/node = SubResource("AnimationNodeAnimation_pwfnf")
+nodes/ThrowIdle/position = Vector2(160, -340)
+nodes/ThrowRun/node = SubResource("AnimationNodeAnimation_43wfv")
+nodes/ThrowRun/position = Vector2(160, 120)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_7jal6")
+nodes/TimeScale/position = Vector2(320, -60)
+nodes/output/position = Vector2(1820, -180)
+node_connections = [&"GroundAirBlend", 0, &"IdleRunBlend", &"GroundAirBlend", 1, &"JumpBlend", &"IdleBlend", 0, &"Idle", &"IdleBlend", 1, &"ThrowIdle", &"IdleBlend", 2, &"PackageIdle", &"IdleRunBlend", 0, &"IdleBlend", &"IdleRunBlend", 1, &"RunBlend", &"JumpBlend", 0, &"Jump", &"JumpBlend", 1, &"PackageJump", &"RunBlend", 0, &"TimeScale", &"RunBlend", 1, &"ThrowRun", &"RunBlend", 2, &"PackageRun", &"TimeScale", 0, &"Run", &"output", 0, &"GroundAirBlend"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_qah07"]
+points = PackedVector3Array(0, 1.6, 0, -3, 0, -2, 3, 0, -2, -3, 3.2, -2, 3, 3.2, -2, -3, 0, -8, 3, 0, -8, -3, 3.2, -8, 3, 3.2, -8)
+
+[node name="player" type="CharacterBody3D" node_paths=PackedStringArray("player_mesh", "spring_arm_pivot", "animation_tree", "camera", "hand_attachment", "laser") groups=["Player"]]
+collision_layer = 4
+collision_mask = 3
+floor_constant_speed = true
+script = ExtResource("1_sk863")
+player_mesh = NodePath("Mesh")
+spring_arm_pivot = NodePath("SpringArmPivot")
+animation_tree = NodePath("AnimationTree")
+camera = NodePath("SpringArmPivot/SpringArm3D/Camera3D")
+envelope = ExtResource("2_3ktye")
+hand_attachment = NodePath("Mesh/Armature/Skeleton3D/HandAttachment")
+laser = NodePath("Mesh/Armature/Skeleton3D/BoneAttachment3D/Laser")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.925, 0)
+shape = SubResource("CapsuleShape3D_y0tnu")
+
+[node name="SpringArmPivot" type="Node3D" parent="." node_paths=PackedStringArray("spring_arm", "camera")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_m3hfy")
+spring_arm = NodePath("SpringArm3D")
+camera = NodePath("SpringArm3D/Camera3D")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="SpringArmPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0)
+shape = SubResource("SeparationRayShape3D_fn0vl")
+spring_length = 3.5
+
+[node name="Camera3D" type="Camera3D" parent="SpringArmPivot/SpringArm3D"]
+fov = 70.0
+script = ExtResource("4_0ff0t")
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../Mesh")
+tree_root = SubResource("AnimationNodeBlendTree_iamef")
+anim_player = NodePath("../Mesh/AnimationPlayer")
+parameters/GroundAirBlend/blend_amount = 0
+parameters/IdleBlend/blend_amount = 0
+parameters/IdleRunBlend/blend_amount = 0.0
+parameters/JumpBlend/blend_amount = 0
+parameters/RunBlend/blend_amount = 0
+parameters/TimeScale/scale = 1.3
+
+[node name="Mesh" parent="." instance=ExtResource("3_ighws")]
+
+[node name="Skeleton3D" parent="Mesh/Armature" index="0"]
+bones/0/position = Vector3(-1.75348e-10, 0.660218, 0.0537008)
+bones/0/rotation = Quaternion(-4.80516e-09, 0.997973, -0.0636462, 7.53448e-08)
+bones/0/scale = Vector3(1, 1, 1)
+bones/1/rotation = Quaternion(-0.162396, -0.176215, 0.0300731, 0.970398)
+bones/2/rotation = Quaternion(0.116377, 0.000325411, 0.00255428, 0.993202)
+bones/3/rotation = Quaternion(-0.0580337, 0.192352, -0.011396, 0.979542)
+bones/4/rotation = Quaternion(-0.0324529, -0.0128495, -0.812307, 0.582184)
+bones/4/scale = Vector3(1, 1, 1)
+bones/5/rotation = Quaternion(0.355527, 0.464038, 0.0194423, 0.811105)
+bones/6/rotation = Quaternion(0.603673, -0.0511333, 0.482693, 0.632433)
+bones/6/scale = Vector3(1, 1, 1)
+bones/7/rotation = Quaternion(-0.0993705, -0.146422, 0.428909, 0.885846)
+bones/7/scale = Vector3(1, 1, 1)
+bones/8/rotation = Quaternion(-2.06725e-08, 8.78731e-08, -0.248409, 0.968655)
+bones/9/rotation = Quaternion(-8.23285e-09, -9.48013e-08, 0.0514985, 0.998673)
+bones/10/rotation = Quaternion(-1.93699e-07, -5.16164e-08, -0.0875684, 0.996158)
+bones/11/rotation = Quaternion(0.189443, 0.0368885, -0.326086, 0.925429)
+bones/11/scale = Vector3(1, 1, 1)
+bones/12/rotation = Quaternion(-0.0462965, 0.00288427, 0.812591, 0.580985)
+bones/12/scale = Vector3(1, 1, 1)
+bones/13/rotation = Quaternion(0.152702, 0.625417, -0.127074, 0.754578)
+bones/14/rotation = Quaternion(0.782733, 0.162707, 0.107795, 0.590962)
+bones/14/scale = Vector3(1, 1, 1)
+bones/15/rotation = Quaternion(-0.0957888, 0.0150112, -0.0536949, 0.993839)
+bones/16/rotation = Quaternion(-0.016606, 0.323156, 0.0493055, 0.944915)
+bones/17/rotation = Quaternion(0.00257252, 0.0140588, 0.20312, 0.97905)
+bones/18/rotation = Quaternion(-9.55418e-05, 0.0236846, 0.0602537, 0.997902)
+bones/19/rotation = Quaternion(0.110093, -0.74238, -0.021495, 0.660522)
+bones/20/rotation = Quaternion(0.0583001, 0.315171, 0.942708, -0.0925721)
+bones/20/scale = Vector3(1, 1, 0.999997)
+bones/21/rotation = Quaternion(-0.445446, -3.96365e-09, -9.48051e-09, 0.895309)
+bones/22/rotation = Quaternion(0.759923, -0.1806, 0.00320036, 0.624411)
+bones/22/scale = Vector3(1, 1, 1)
+bones/23/rotation = Quaternion(-0.287791, 0.084338, 0.946616, 0.118245)
+bones/23/scale = Vector3(1, 1, 0.999997)
+bones/24/rotation = Quaternion(-0.34539, -4.6285e-08, 1.23541e-08, 0.938459)
+bones/25/rotation = Quaternion(0.833523, 0.0673526, 0.0693187, 0.543965)
+bones/25/scale = Vector3(1, 1, 1)
+bones/26/position = Vector3(-0.196929, 0.513757, -0.389043)
+bones/27/position = Vector3(-0.203274, 0.0703229, 0.0385828)
+bones/27/rotation = Quaternion(0.127978, 0.679147, 0.695429, -0.196874)
+bones/28/position = Vector3(0.453686, 0.513757, -0.389043)
+bones/29/position = Vector3(0.140977, 0.0703229, 0.282194)
+bones/29/rotation = Quaternion(-0.210355, 0.663042, 0.675093, 0.245714)
+
+[node name="HandAttachment" type="BoneAttachment3D" parent="Mesh/Armature/Skeleton3D" index="1"]
+transform = Transform3D(0.676097, -0.0258056, -0.736361, 0.104968, 0.992566, 0.0615937, 0.729297, -0.118938, 0.673779, 0.451771, 1.59062, 0.21982)
+bone_name = "Carpal.R"
+bone_idx = 16
+
+[node name="BoneAttachment3D" type="BoneAttachment3D" parent="Mesh/Armature/Skeleton3D" index="2"]
+transform = Transform3D(-0.998444, 0.0462473, -0.0311684, 0.042929, 0.994078, 0.0998215, 0.0356002, 0.0983282, -0.994517, 0.0251169, 1.36895, 0.0834722)
+bone_name = "Head"
+bone_idx = 3
+
+[node name="Laser" parent="Mesh/Armature/Skeleton3D/BoneAttachment3D" instance=ExtResource("6_86g0x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00104341, 0.215149, 0.110649)
+
+[node name="ViewCone" type="Area3D" parent="Mesh"]
+
+[node name="Collision" type="CollisionShape3D" parent="Mesh/ViewCone"]
+shape = SubResource("ConvexPolygonShape3D_qah07")
+
+[node name="LedgeCheck" type="Node3D" parent="Mesh"]
+
+[node name="LedgeCheckLowerLeft" type="RayCast3D" parent="Mesh/LedgeCheck"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+target_position = Vector3(-0.25, -0.25, 0)
+
+[node name="LedgeCheckUpperLeft" type="RayCast3D" parent="Mesh/LedgeCheck"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.25, 0)
+target_position = Vector3(-0.25, -0.25, 0)
+
+[node name="LedgeHeightCheckLeft" type="RayCast3D" parent="Mesh/LedgeCheck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0.25, -0.25)
+target_position = Vector3(0, -0.25, 0)
+
+[node name="LedgeCheckLowerRight" type="RayCast3D" parent="Mesh/LedgeCheck"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+target_position = Vector3(0.25, -0.25, 0)
+
+[node name="LedgeCheckUpperRight" type="RayCast3D" parent="Mesh/LedgeCheck"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.25, 0)
+target_position = Vector3(0.25, -0.25, 0)
+
+[node name="LedgeHeightCheckRight" type="RayCast3D" parent="Mesh/LedgeCheck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0.25, -0.25)
+target_position = Vector3(0, -0.25, 0)
+
+[editable path="Mesh"]

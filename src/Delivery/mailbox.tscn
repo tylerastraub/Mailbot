@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://yxy5xk80vb1m"]
+
+[ext_resource type="PackedScene" uid="uid://dqwl2ys8m56oe" path="res://res/models/delivery/mailbox.glb" id="1_lwkrx"]
+[ext_resource type="Script" path="res://src/Delivery/mailbox.gd" id="1_p5ipd"]
+[ext_resource type="Shader" path="res://src/Delivery/outline.gdshader" id="3_ti7il"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x02su"]
+size = Vector3(1.5, 1.8, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_shcnv"]
+render_priority = 0
+shader = ExtResource("3_ti7il")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_width = 3.0
+shader_parameter/enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ren5l"]
+size = Vector3(1.4, 1.5, 1)
+
+[node name="MailboxArea" type="Area3D"]
+collision_layer = 2
+script = ExtResource("1_p5ipd")
+
+[node name="AreaCollision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_x02su")
+
+[node name="Mesh" parent="." instance=ExtResource("1_lwkrx")]
+
+[node name="Cube" parent="Mesh" index="0"]
+material_overlay = SubResource("ShaderMaterial_shcnv")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Mesh/Cube" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mesh/Cube/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+shape = SubResource("BoxShape3D_ren5l")
+
+[editable path="Mesh"]

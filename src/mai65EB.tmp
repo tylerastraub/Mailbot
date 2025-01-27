@@ -1,0 +1,289 @@
+[gd_scene load_steps=25 format=3 uid="uid://ch25hr8p7moc3"]
+
+[ext_resource type="Texture2D" uid="uid://c6vffbjp7btc1" path="res://res/textures/dev_gray.png" id="1_2cfpu"]
+[ext_resource type="Texture2D" uid="uid://e3q6m3fq5u8l" path="res://res/textures/dev_orange.png" id="2_pmt2e"]
+[ext_resource type="PackedScene" uid="uid://bot2qowbjssij" path="res://src/Player/player.tscn" id="3_e1y2y"]
+[ext_resource type="PackedScene" uid="uid://cvrs2xy6qm30l" path="res://res/models/envelope.glb" id="4_iefdd"]
+[ext_resource type="PackedScene" uid="uid://yxy5xk80vb1m" path="res://src/Delivery/mailbox.tscn" id="5_xk1jg"]
+[ext_resource type="PackedScene" uid="uid://cf1io1cbrdpws" path="res://src/Delivery/envelope.tscn" id="6_6niq8"]
+[ext_resource type="Script" path="res://src/UI/throw_meter.gd" id="6_rmkgd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o7w2l"]
+albedo_texture = ExtResource("1_2cfpu")
+uv1_triplanar = true
+texture_filter = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_di6cg"]
+material = SubResource("StandardMaterial3D_o7w2l")
+size = Vector2(20, 20)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_vbk57"]
+data = PackedVector3Array(10, 0, 10, -10, 0, 10, 10, 0, -10, -10, 0, 10, -10, 0, -10, 10, 0, -10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bgryj"]
+albedo_texture = ExtResource("2_pmt2e")
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_sn2xf"]
+material = SubResource("StandardMaterial3D_bgryj")
+size = Vector3(5, 4, 10)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_7ltnu"]
+data = PackedVector3Array(-2.5, 2, 5, 2.5, 2, 5, -2.5, -2, 5, 2.5, 2, 5, 2.5, -2, 5, -2.5, -2, 5, 2.5, 2, -5, -2.5, 2, -5, 2.5, -2, -5, -2.5, 2, -5, -2.5, -2, -5, 2.5, -2, -5, 2.5, 2, 5, 2.5, 2, -5, 2.5, -2, 5, 2.5, 2, -5, 2.5, -2, -5, 2.5, -2, 5, -2.5, 2, -5, -2.5, 2, 5, -2.5, -2, -5, -2.5, 2, 5, -2.5, -2, 5, -2.5, -2, -5, 2.5, 2, 5, -2.5, 2, 5, 2.5, 2, -5, -2.5, 2, 5, -2.5, 2, -5, 2.5, 2, -5, -2.5, -2, 5, 2.5, -2, 5, -2.5, -2, -5, 2.5, -2, 5, 2.5, -2, -5, -2.5, -2, -5)
+
+[sub_resource type="PrismMesh" id="PrismMesh_rsimn"]
+material = SubResource("StandardMaterial3D_bgryj")
+left_to_right = 1.0
+size = Vector3(4, 2.5, 3)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_0302g"]
+data = PackedVector3Array(2, 1.25, 1.5, 2, -1.25, 1.5, -2, -1.25, 1.5, 2, 1.25, -1.5, -2, -1.25, -1.5, 2, -1.25, -1.5, 2, 1.25, 1.5, 2, 1.25, -1.5, 2, -1.25, 1.5, 2, 1.25, -1.5, 2, -1.25, -1.5, 2, -1.25, 1.5, 2, 1.25, -1.5, 2, 1.25, 1.5, -2, -1.25, -1.5, 2, 1.25, 1.5, -2, -1.25, 1.5, -2, -1.25, -1.5, -2, -1.25, 1.5, 2, -1.25, 1.5, -2, -1.25, -1.5, 2, -1.25, 1.5, 2, -1.25, -1.5, -2, -1.25, -1.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_mqj4d"]
+material = SubResource("StandardMaterial3D_bgryj")
+size = Vector3(16, 0.1, 4)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_m88v3"]
+data = PackedVector3Array(-8, 0.05, 2, 8, 0.05, 2, -8, -0.05, 2, 8, 0.05, 2, 8, -0.05, 2, -8, -0.05, 2, 8, 0.05, -2, -8, 0.05, -2, 8, -0.05, -2, -8, 0.05, -2, -8, -0.05, -2, 8, -0.05, -2, 8, 0.05, 2, 8, 0.05, -2, 8, -0.05, 2, 8, 0.05, -2, 8, -0.05, -2, 8, -0.05, 2, -8, 0.05, -2, -8, 0.05, 2, -8, -0.05, -2, -8, 0.05, 2, -8, -0.05, 2, -8, -0.05, -2, 8, 0.05, 2, -8, 0.05, 2, 8, 0.05, -2, -8, 0.05, 2, -8, 0.05, -2, 8, 0.05, -2, -8, -0.05, 2, 8, -0.05, 2, -8, -0.05, -2, 8, -0.05, 2, 8, -0.05, -2, -8, -0.05, -2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0xpro"]
+material = SubResource("StandardMaterial3D_bgryj")
+size = Vector3(16, 3.5, 0.1)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_pcibn"]
+data = PackedVector3Array(-8, 1.75, 0.05, 8, 1.75, 0.05, -8, -1.75, 0.05, 8, 1.75, 0.05, 8, -1.75, 0.05, -8, -1.75, 0.05, 8, 1.75, -0.05, -8, 1.75, -0.05, 8, -1.75, -0.05, -8, 1.75, -0.05, -8, -1.75, -0.05, 8, -1.75, -0.05, 8, 1.75, 0.05, 8, 1.75, -0.05, 8, -1.75, 0.05, 8, 1.75, -0.05, 8, -1.75, -0.05, 8, -1.75, 0.05, -8, 1.75, -0.05, -8, 1.75, 0.05, -8, -1.75, -0.05, -8, 1.75, 0.05, -8, -1.75, 0.05, -8, -1.75, -0.05, 8, 1.75, 0.05, -8, 1.75, 0.05, 8, 1.75, -0.05, -8, 1.75, 0.05, -8, 1.75, -0.05, 8, 1.75, -0.05, -8, -1.75, 0.05, 8, -1.75, 0.05, -8, -1.75, -0.05, 8, -1.75, 0.05, 8, -1.75, -0.05, -8, -1.75, -0.05)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_24qr2"]
+sky_top_color = Color(0.291494, 0.723225, 0.888397, 1)
+
+[sub_resource type="Sky" id="Sky_8tsak"]
+sky_material = SubResource("ProceduralSkyMaterial_24qr2")
+
+[sub_resource type="Environment" id="Environment_h83wd"]
+background_mode = 2
+sky = SubResource("Sky_8tsak")
+glow_enabled = true
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_hdlg5"]
+
+[sub_resource type="Compositor" id="Compositor_koqs3"]
+
+[node name="main" type="Node3D"]
+
+[node name="level" type="Node3D" parent="."]
+
+[node name="ground" type="MeshInstance3D" parent="level"]
+mesh = SubResource("PlaneMesh_di6cg")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="level/ground"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="level/ground/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_vbk57")
+
+[node name="house" type="MeshInstance3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, 2, 0)
+mesh = SubResource("BoxMesh_sn2xf")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="level/house"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="level/house/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_7ltnu")
+
+[node name="ramp" type="MeshInstance3D" parent="level"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5.5, 1.25, 3)
+mesh = SubResource("PrismMesh_rsimn")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="level/ramp"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="level/ramp/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_0302g")
+
+[node name="platform" type="MeshInstance3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 2.45, 7)
+mesh = SubResource("BoxMesh_mqj4d")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="level/platform"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="level/platform/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_m88v3")
+
+[node name="wall" type="MeshInstance3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.75, 9.05)
+mesh = SubResource("BoxMesh_0xpro")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="level/wall"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="level/wall/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_pcibn")
+
+[node name="Mailbox" parent="level" instance=ExtResource("5_xk1jg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.22285, 0, -1.98762)
+
+[node name="envelope" parent="level" instance=ExtResource("4_iefdd")]
+transform = Transform3D(1.91069e-15, 1, -4.37114e-08, 4.37114e-08, -4.37114e-08, -1, -1, 0, -4.37114e-08, -3.99989, 1, -1.41829)
+
+[node name="player" parent="." node_paths=PackedStringArray("ui") instance=ExtResource("3_e1y2y")]
+ui = NodePath("../UI")
+envelope = ExtResource("6_6niq8")
+walk_speed = 4.0
+boost_speed = 8.0
+jump_strength = 10.0
+gravity = 30.0
+throwing_move_speed = 2.0
+
+[node name="Skeleton3D" parent="player/Mesh/Armature" index="0"]
+bones/0/position = Vector3(-1.78693e-11, 0.652008, 0.0537008)
+bones/0/rotation = Quaternion(-4.80516e-09, 0.997973, -0.0636462, 7.53448e-08)
+bones/0/scale = Vector3(1, 1, 1)
+bones/1/rotation = Quaternion(-0.162396, -0.176215, 0.0300731, 0.970398)
+bones/2/rotation = Quaternion(0.122486, 3.31941e-05, 0.000260552, 0.99247)
+bones/3/rotation = Quaternion(-0.0580337, 0.192352, -0.011396, 0.979542)
+bones/4/rotation = Quaternion(-0.0324529, -0.0128495, -0.812307, 0.582184)
+bones/4/scale = Vector3(1, 1, 1)
+bones/5/rotation = Quaternion(0.400469, 0.45971, 0.0160709, 0.792486)
+bones/6/rotation = Quaternion(0.603673, -0.0511333, 0.482693, 0.632433)
+bones/6/scale = Vector3(1, 1, 1)
+bones/7/rotation = Quaternion(-0.0993705, -0.146422, 0.428909, 0.885846)
+bones/7/scale = Vector3(1, 1, 1)
+bones/8/rotation = Quaternion(-2.06725e-08, 8.78731e-08, -0.248409, 0.968655)
+bones/9/rotation = Quaternion(-8.23285e-09, -9.48013e-08, 0.0514985, 0.998673)
+bones/10/rotation = Quaternion(-1.93699e-07, -5.16164e-08, -0.0875684, 0.996158)
+bones/11/rotation = Quaternion(0.189443, 0.0368885, -0.326086, 0.925429)
+bones/12/rotation = Quaternion(-0.0462965, 0.00288427, 0.812591, 0.580985)
+bones/12/scale = Vector3(1, 1, 1)
+bones/13/rotation = Quaternion(0.166182, 0.622109, -0.115577, 0.75631)
+bones/14/rotation = Quaternion(0.782733, 0.162707, 0.107795, 0.590962)
+bones/14/scale = Vector3(1, 1, 1)
+bones/15/rotation = Quaternion(-0.0957888, 0.0150112, -0.0536949, 0.993839)
+bones/16/rotation = Quaternion(-0.016606, 0.323156, 0.0493055, 0.944915)
+bones/17/rotation = Quaternion(0.00257252, 0.0140588, 0.20312, 0.97905)
+bones/18/rotation = Quaternion(-9.55418e-05, 0.0236846, 0.0602537, 0.997902)
+bones/19/rotation = Quaternion(0.110093, -0.74238, -0.021495, 0.660522)
+bones/20/rotation = Quaternion(0.0578549, 0.327649, 0.938279, -0.0945069)
+bones/20/scale = Vector3(1, 1, 0.999997)
+bones/21/rotation = Quaternion(-0.467671, -3.95677e-09, -1.38339e-08, 0.883903)
+bones/22/rotation = Quaternion(0.766889, -0.180163, -0.00016703, 0.615973)
+bones/22/scale = Vector3(1, 1, 1)
+bones/23/rotation = Quaternion(-0.287084, 0.0973186, 0.94483, 0.124128)
+bones/23/scale = Vector3(1, 1, 0.999997)
+bones/24/rotation = Quaternion(-0.373608, -3.52625e-08, 2.22449e-08, 0.927587)
+bones/25/rotation = Quaternion(0.841822, 0.0658962, 0.0725366, 0.530784)
+bones/25/scale = Vector3(1, 1, 1)
+bones/26/position = Vector3(-0.196929, 0.513757, -0.389043)
+bones/27/position = Vector3(-0.203274, 0.0703229, 0.0385828)
+bones/27/rotation = Quaternion(0.127978, 0.679147, 0.695429, -0.196874)
+bones/28/position = Vector3(0.453686, 0.513757, -0.389043)
+bones/29/position = Vector3(0.140977, 0.0703229, 0.282194)
+bones/29/rotation = Quaternion(-0.210355, 0.663042, 0.675093, 0.245714)
+
+[node name="RayCast3D" parent="player" index="4"]
+target_position = Vector3(0, 0, -15)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_h83wd")
+camera_attributes = SubResource("CameraAttributesPractical_hdlg5")
+compositor = SubResource("Compositor_koqs3")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.413436, -0.653318, 0.634229, 0.0316987, 0.685798, 0.727102, -0.909981, 0.320714, -0.262824, 0, 6.68354, 0)
+sky_mode = 1
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Crosshair" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = 6.0
+offset_right = -42.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Outline" type="ColorRect" parent="UI/Crosshair"]
+z_index = -1
+layout_mode = 0
+offset_right = 4.0
+offset_bottom = 4.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Center" type="ColorRect" parent="UI/Crosshair"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ThrowMeter" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("6_rmkgd")
+
+[node name="Meter" type="ColorRect" parent="UI/ThrowMeter"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5.0
+offset_top = -40.0
+offset_right = 5.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.821911, 2.62313e-06, 7.70092e-07, 1)
+
+[node name="Sweetspot" type="ColorRect" parent="UI/ThrowMeter"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5.0
+offset_right = 5.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 1, 0, 1)
+
+[node name="Marker" type="ColorRect" parent="UI/ThrowMeter"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -9.0
+offset_top = 38.0
+offset_right = 9.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[editable path="player"]
+[editable path="player/Mesh"]
