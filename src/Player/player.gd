@@ -116,6 +116,12 @@ func _physics_process(delta):
 	move_player(delta)
 	apply_floor_snap()
 	move_and_slide()
+	
+	for i in get_slide_collision_count():
+		var c = get_slide_collision(i)
+		if c.get_collider() is RigidBody3D:
+			c.get_collider().apply_central_impulse(-c.get_normal() * 1.0)
+	
 	check_for_stairs()
 	animate(delta)
 
@@ -140,14 +146,14 @@ func throw_envelope():
 	envelope_child.rotation_degrees = Vector3(0, 90, -60.0)
 	if throw_timer <= throw_sweetspot_start + throw_sweetspot_length and throw_timer >= throw_sweetspot_start:
 		SignalManager.throwEnvelope.emit(envelope_child, self, throw_target, Vector3(0, 1.2, 0))
-		envelope_child = null
 	else:
 		throw_target = find_nearest_npc(ERRANT_THROW_MAX_RANGE)
 		SignalManager.throwEnvelope.emit(envelope_child, self, throw_target, Vector3(0, 0.3, 0))
-		envelope_child = null
 	# todo: if failed throw, change target to random NPC nearby
 	SignalManager.playerStopThrow.emit()
 	throw_target = null
+	envelope_child.reparent(get_parent())
+	envelope_child = null
 	animation_tree.set("parameters/ThrowBlend/blend_amount", -1.0)
 
 func move_player(delta: float):
@@ -165,7 +171,7 @@ func move_player(delta: float):
 			ticks_since_last_boost = 0.0
 		boost = false
 		
-	if boost and not is_throwing:
+	if boost and not is_throwing and package_child == null:
 		speed = boost_speed
 		boost_amount -= boost_drain
 	else:
@@ -286,7 +292,8 @@ func pick_up_package(package: Package):
 	package_child = package
 
 func throw_package():
-	package_child.get_parent().top_level = true
+	package_child.get_parent().reparent(self)
+	package_child.get_thrown()
 	package_child = null
 
 func _on_body_entered(body: Node3D):

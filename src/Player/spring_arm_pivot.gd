@@ -32,7 +32,7 @@ func _physics_process(_delta):
 			spring_arm.spring_length = lerpf(spring_arm.spring_length, zoom_spring_length, CAMERA_BLEND * 5)
 		else:
 			spring_arm.spring_length = lerpf(spring_arm.spring_length, default_spring_length, CAMERA_BLEND * 5)
-			if owner.boost:
+			if owner.boost and owner.package_child == null:
 				camera.fov = lerp(camera.fov, boost_fov, CAMERA_BLEND)
 			else:
 				camera.fov = lerp(camera.fov, normal_fov, CAMERA_BLEND)

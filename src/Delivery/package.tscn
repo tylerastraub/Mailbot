@@ -1,8 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://b8ldevxvphcjq"]
+[gd_scene load_steps=7 format=3 uid="uid://b8ldevxvphcjq"]
 
 [ext_resource type="PackedScene" uid="uid://cam3qob62yppx" path="res://res/models/delivery/package.glb" id="1_k5jhu"]
 [ext_resource type="Script" path="res://src/Delivery/package.gd" id="2_8fl7n"]
 [ext_resource type="Shader" path="res://src/Delivery/outline.gdshader" id="3_clrge"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_wwiqu"]
+friction = 0.5
+bounce = 0.2
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h2kaj"]
 size = Vector3(0.56, 0.36, 0.45)
@@ -15,7 +19,10 @@ shader_parameter/outline_width = 3.0
 shader_parameter/enabled = true
 
 [node name="RigidBody3D" type="RigidBody3D"]
-mass = 0.001
+collision_layer = 8
+collision_mask = 15
+physics_material_override = SubResource("PhysicsMaterial_wwiqu")
+angular_damp = 0.5
 
 [node name="Collision" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_h2kaj")

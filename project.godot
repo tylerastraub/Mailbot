@@ -110,6 +110,7 @@ interact={
 
 3d_physics/layer_2="Interactables"
 3d_physics/layer_3="Player"
+3d_physics/layer_4="Packages"
 
 [physics]
 

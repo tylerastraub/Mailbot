@@ -1,4 +1,4 @@
-extends Node3D
+extends Area3D
 
 class_name Package
 
@@ -14,16 +14,23 @@ func _ready() -> void:
 	mesh.get("material_overlay").set("shader_parameter/outline_width", outline_width)
 	mesh.get("material_overlay").set("shader_parameter/enabled", false)
 
+func _physics_process(_delta: float) -> void:
+	#print(get_parent().global_position)
+	#print(get_parent().get_parent().name)
+	pass
+
 func pick_up():
+	get_parent().top_level = false
 	$AreaCollision.disabled = true
 	collision.disabled = true
 	rigidbody.freeze = true
 	
 func get_thrown():
-	#$AreaCollision.disabled = false
+	get_parent().top_level = true
+	$AreaCollision.disabled = false
 	collision.disabled = false
 	rigidbody.freeze = false
-	#rigidbody.apply_central_force(Vector3(0, 20.0, -20.0))
+	rigidbody.apply_central_force(Vector3(500.0, 70.0, 0.0).rotated(Vector3.UP, rigidbody.global_rotation.y))
 
 func _on_ray_entered(package: Package):
 	if package == self:
