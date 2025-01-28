@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 SignalManager="*res://src/signal_manager.gd"
+DebugDraw="*res://addons/zylann.debug_draw/debug_draw.gd"
 
 [display]
 
@@ -111,6 +112,7 @@ interact={
 3d_physics/layer_2="Interactables"
 3d_physics/layer_3="Player"
 3d_physics/layer_4="Packages"
+3d_physics/layer_5="Dead"
 
 [physics]
 

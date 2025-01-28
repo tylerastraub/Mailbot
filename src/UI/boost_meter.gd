@@ -19,4 +19,3 @@ func _physics_process(_delta: float) -> void:
 	modulate.a = clamp(modulate.a, 0.0, 1.0)
 	modulate.g = player.boost_amount * 4.0
 	modulate.b = player.boost_amount * 4.0
-	#print(modulate.a)

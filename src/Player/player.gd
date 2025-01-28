@@ -99,9 +99,12 @@ func _physics_process(delta):
 		if raycast_result.collider is Package:
 			pick_up_package(raycast_result.collider)
 
+	if npc_targets.size() > 0:
+		SignalManager.npcTargeting.emit(npc_targets)
+		
 	for pair in npc_targets:
 		if pair[1] > npc_lock_minimum - delta / 2 and pair[1] < npc_lock_minimum + delta / 2:
-			print("LOCKING ON...")
+			pass
 		if pair[1] > npc_lock_maximum:
 			shoot_laser(pair[0])
 			npc_targets_remove_queue.push_back(pair[0])
@@ -168,7 +171,6 @@ func move_player(delta: float):
 	
 	if Input.is_action_just_pressed("boost") and ticks_since_last_boost >= boost_timeout:
 		boost = true
-		SignalManager.playerStartBoost.emit(boost_amount, boost_drain)
 	if boost_amount <= 0 or not Input.is_action_pressed("boost"):
 		if boost_amount <= 0 and boost:
 			ticks_since_last_boost = 0.0
@@ -191,8 +193,6 @@ func move_player(delta: float):
 		
 	boost_amount = clamp(boost_amount, 0.0, 1.0)
 	ticks_since_last_boost += delta
-	
-	#print("boost", boost_amount)
 	
 	velocity.x = move_direction.x * speed
 	velocity.z = move_direction.z * speed
@@ -270,13 +270,12 @@ func shoot_laser(target: NPC):
 func add_npc_target(npc: NPC):
 	if npc.is_alive and npc_targets.has(npc) == false:
 		npc_targets.push_back([npc, 0.0])
-		print("added NPC to list")
 
 func remove_npc_target(npc: NPC):
 	for pair in npc_targets:
 		if pair.has(npc):
 			npc_targets.erase(pair)
-			print("removed NPC from list")
+			SignalManager.npcStopTarget.emit(npc)
 
 func check_for_stairs():
 	is_on_stairs = false

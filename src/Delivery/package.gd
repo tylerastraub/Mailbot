@@ -11,13 +11,9 @@ class_name Package
 func _ready() -> void:
 	SignalManager.packageHoverOn.connect(_on_ray_entered)
 	SignalManager.packageHoverOff.connect(_on_ray_exited)
+	body_entered.connect(_on_body_entered)
 	mesh.get("material_overlay").set("shader_parameter/outline_width", outline_width)
 	mesh.get("material_overlay").set("shader_parameter/enabled", false)
-
-func _physics_process(_delta: float) -> void:
-	#print(get_parent().global_position)
-	#print(get_parent().get_parent().name)
-	pass
 
 func pick_up():
 	get_parent().top_level = false
@@ -39,3 +35,8 @@ func _on_ray_entered(package: Package):
 func _on_ray_exited(package: Package):
 	if package != self:
 		mesh.get("material_overlay").set("shader_parameter/enabled", false)
+
+func _on_body_entered(body: Node):
+	if body is NPC:
+		if body.is_alive:
+			body.kill_npc(Vector3.ZERO)

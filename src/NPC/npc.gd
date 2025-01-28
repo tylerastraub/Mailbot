@@ -59,7 +59,6 @@ func set_nav_target(nav_target: Vector3):
 func _on_envelope_delivered(_deliverer: Node3D, envelope: Envelope, recipient: Node3D):
 	if recipient == self:
 		call_deferred("kill_npc", envelope.velocity * 4.0 + Vector3(0.0, 40.0, 0.0))
-		print("OW!!!!!!!!!!!! im dead")
 
 func kill_npc(force: Vector3):
 	is_alive = false
@@ -70,6 +69,7 @@ func kill_npc(force: Vector3):
 	bone_simulator.active = true
 	bone_simulator.physical_bones_start_simulation()
 	bone_simulator.find_child("Physical Bone Pelvis").apply_central_impulse(force)
+	collision_layer = 16
 	velocity = force
 	
 func animate(delta: float):

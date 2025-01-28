@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://hbqg4p4bj1ig"]
+
+[ext_resource type="Script" path="res://src/UI/reticle.gd" id="1_ahjbi"]
+[ext_resource type="Texture2D" uid="uid://bhx1y8ypx0j1a" path="res://res/textures/target_reticle_1.png" id="1_raa2a"]
+
+[node name="Reticle" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+script = ExtResource("1_ahjbi")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 0
+offset_right = 10.0
+offset_bottom = 10.0
+pivot_offset = Vector2(16, 16)
+mouse_filter = 2
+texture = ExtResource("1_raa2a")
+metadata/_edit_use_anchors_ = true

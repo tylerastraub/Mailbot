@@ -17,6 +17,6 @@ signal throwEnvelope(envelope: Node3D, thrower: Node3D, target: Node3D, throw_ta
 @warning_ignore("unused_signal")
 signal envelopeDelivered(deliverer: Node3D, envelope: Envelope, recipient: Node3D)
 @warning_ignore("unused_signal")
-signal playerStartBoost(boostAmount: float, boostDrain: float)
+signal npcTargeting(npcs: Array)
 @warning_ignore("unused_signal")
-signal playerStopBoost()
+signal npcStopTarget()
