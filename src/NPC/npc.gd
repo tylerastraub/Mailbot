@@ -7,8 +7,9 @@ const ANIMATION_BLEND : float = 20.0
 
 @export var nav : NavigationAgent3D = null
 @export var bone_simulator : PhysicalBoneSimulator3D = null
+@export var animation_tree : AnimationTree = null
 
-@export var speed = 2.0
+@export var speed = 1.0
 @export var acceleration = 10.0
 @export var friction = 2.0
 @export var gravity = 18.0
@@ -50,6 +51,7 @@ func _physics_process(delta: float) -> void:
 	
 	apply_floor_snap()
 	move_and_slide()
+	animate(delta)
 
 func set_nav_target(nav_target: Vector3):
 	nav.target_position = nav_target
@@ -70,3 +72,6 @@ func kill_npc(force: Vector3):
 	bone_simulator.find_child("Physical Bone Pelvis").apply_central_impulse(force)
 	velocity = force
 	
+func animate(delta: float):
+	var blend_target: float = 1.0 if Vector3(velocity.x, 0.0, velocity.z).length() > 0 else 0.0
+	animation_tree.set("parameters/IdleRunBlend/blend_amount", lerpf(animation_tree.get("parameters/IdleRunBlend/blend_amount"), blend_target, delta * ANIMATION_BLEND))

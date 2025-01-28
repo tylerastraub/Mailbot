@@ -1,5 +1,7 @@
 extends CharacterBody3D
 
+class_name Player
+
 const LERP_VALUE : float = 0.15
 const ANIMATION_BLEND : float = 20.0
 
@@ -166,9 +168,14 @@ func move_player(delta: float):
 	
 	if Input.is_action_just_pressed("boost") and ticks_since_last_boost >= boost_timeout:
 		boost = true
+		SignalManager.playerStartBoost.emit(boost_amount, boost_drain)
 	if boost_amount <= 0 or not Input.is_action_pressed("boost"):
-		if(boost_amount <= 0 and boost):
+		if boost_amount <= 0 and boost:
 			ticks_since_last_boost = 0.0
+			boost_timeout = 3.0
+		elif boost:
+			ticks_since_last_boost = 0.0
+			boost_timeout = 1.0
 		boost = false
 		
 	if boost and not is_throwing and package_child == null:
@@ -202,6 +209,8 @@ func move_player(delta: float):
 		velocity.y = jump_strength
 		snap_vector = Vector3.ZERO
 		boost_amount -= jump_boost_threshold
+		ticks_since_last_boost = 0.0
+		boost_timeout = 1.0 if boost_amount > 0.0 else 3.0
 	elif just_landed:
 		snap_vector = Vector3.DOWN
 
