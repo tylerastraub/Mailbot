@@ -50,7 +50,7 @@ var is_on_stairs : bool = false
 @export var boost_speed : float = 8.0
 @export var throwing_move_speed : float = 2.0
 @export var package_carry_move_speed : float = 3.0
-@export var jump_strength : float = 10.0
+@export var jump_strength : float = 9.0
 @export var gravity : float = 30.0
 
 @export_group("Boost settings")
@@ -66,12 +66,16 @@ var is_on_stairs : bool = false
 const LASER_BASE_WIDTH : float = 0.06
 var laser_timer = 0.0
 
+var first_input : bool = false
+
 func _ready() -> void:
+	SignalManager.playerSpawned.emit(self)
 	$Mesh/ViewCone.connect("body_entered", _on_body_entered)
 	$Mesh/ViewCone.connect("body_exited", _on_body_exited)
 	laser.hide()
 
 func _input(event: InputEvent) -> void:
+	first_input = true
 	if event.is_action_released("pause"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
@@ -80,6 +84,8 @@ func _input(event: InputEvent) -> void:
 	raycast_result = camera.make_raycast()
 
 func _physics_process(delta):
+	if first_input == false:
+		global_position = Vector3(0.0, 0.0, 0.0)
 	#throwing
 	if Input.is_action_just_pressed("throw") and is_on_floor():
 		if package_child != null:
@@ -88,8 +94,9 @@ func _physics_process(delta):
 			throw_envelope()
 		elif raycast_result.size() > 0:
 			if raycast_result.collider is Mailbox:
-				throw_target = raycast_result.collider
-				start_envelope_throw()
+				if raycast_result.collider.open:
+					throw_target = raycast_result.collider
+					start_envelope_throw()
 	if is_throwing:
 		if throw_timer >= THROW_TIME_LIMIT or not is_on_floor():
 			throw_envelope()
@@ -127,7 +134,7 @@ func _physics_process(delta):
 		if c.get_collider() is RigidBody3D:
 			c.get_collider().apply_central_impulse(-c.get_normal() * 1.0)
 	
-	check_for_stairs()
+	is_on_stairs = $Mesh/LedgeCheck.check_for_stairs(self)
 	animate(delta)
 
 func start_envelope_throw():
@@ -154,7 +161,6 @@ func throw_envelope():
 	else:
 		throw_target = find_nearest_npc(ERRANT_THROW_MAX_RANGE)
 		SignalManager.throwEnvelope.emit(envelope_child, self, throw_target, Vector3(0, 0.3, 0))
-	# todo: if failed throw, change target to random NPC nearby
 	SignalManager.playerStopThrow.emit()
 	throw_target = null
 	envelope_child.reparent(get_parent())
@@ -276,21 +282,6 @@ func remove_npc_target(npc: NPC):
 		if pair.has(npc):
 			npc_targets.erase(pair)
 			SignalManager.npcStopTarget.emit(npc)
-
-func check_for_stairs():
-	is_on_stairs = false
-	if velocity.y > 0:
-		return
-	if $Mesh/LedgeCheck/LedgeCheckLowerLeft.is_colliding() and $Mesh/LedgeCheck/LedgeCheckUpperLeft.is_colliding() == false and $Mesh/LedgeCheck/LedgeHeightCheckLeft.is_colliding():
-		if $Mesh/LedgeCheck/LedgeHeightCheckLeft.get_collision_normal() == Vector3.UP:
-			global_position.y = $Mesh/LedgeCheck/LedgeHeightCheckLeft.get_collision_point().y
-			velocity.y = 0
-			is_on_stairs = true
-	elif $Mesh/LedgeCheck/LedgeCheckLowerRight.is_colliding() and $Mesh/LedgeCheck/LedgeCheckUpperRight.is_colliding() == false and $Mesh/LedgeCheck/LedgeHeightCheckRight.is_colliding():
-		if $Mesh/LedgeCheck/LedgeHeightCheckRight.get_collision_normal() == Vector3.UP:
-			global_position.y = $Mesh/LedgeCheck/LedgeHeightCheckRight.get_collision_point().y
-			velocity.y = 0
-			is_on_stairs = true
 
 func pick_up_package(package: Package):
 	package.get_parent().reparent(hand_attachment, false)

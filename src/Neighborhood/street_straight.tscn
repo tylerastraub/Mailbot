@@ -2,21 +2,21 @@
 
 [ext_resource type="PackedScene" uid="uid://cg7q0e0fnwd8u" path="res://res/models/neighborhood/street_straight.glb" id="1_c816q"]
 
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_mh7nj"]
-data = PackedVector3Array(-5, 0, 5, -5, 0, 5, -5, 0, -5, -5, 0, -5, -5, 0, 5, -5, 0, -5, -5, 0, 5, -5, 0.1, -5, -5, 0, -5, -5, 0, 5, -5, 0.1, 5, -5, 0.1, -5, 4.9998, 0, -5, 4.9998, 0.1, 5, 4.9998, 0, 5, 4.9998, 0, -5, 4.9998, 0.1, -5, 4.9998, 0.1, 5, -5, 0.1, 5, -7, 0.1, -5, -5, 0.1, -5, -5, 0.1, 5, -7, 0.1, 5, -7, 0.1, -5, 4.9998, 0.1, -5, 7, 0.1, 5, 4.9998, 0.1, 5, 4.9998, 0.1, -5, 7, 0.1, -5, 7, 0.1, 5)
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ybccn"]
+data = PackedVector3Array(-5, 0, 5, -5, 0, 5, -5, 0, -5, -5, 0, -5, -5, 0, 5, -5, 0, -5, -5, 0, 5, -5, 0.1, -5, -5, 0, -5, -5, 0, 5, -5, 0.1, 5, -5, 0.1, -5, -5, 0.1, 5, -7, 0.1, -5, -5, 0.1, -5, -5, 0.1, 5, -7, 0.1, 5, -7, 0.1, -5, -7, 0.1, 5, -7, 0, -5, -7, 0.1, -5, -7, 0.1, 5, -7, 0, 5, -7, 0, -5)
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_qo0m1"]
 data = PackedVector3Array(-5, 0, 5, 5, 0, -5, 5, 0, 5, -5, 0, 5, -5, 0, -5, 5, 0, -5)
 
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_3by8n"]
-data = PackedVector3Array(5, 0, -5, 5, 0.1, 5, 5, 0, 5, 5, 0, -5, 5, 0.1, -5, 5, 0.1, 5, 5, 0.1, -5, 7, 0.1, 5, 5, 0.1, 5, 5, 0.1, -5, 7, 0.1, -5, 7, 0.1, 5)
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_tq038"]
+data = PackedVector3Array(5, 0, -5, 5, 0.1, 5, 5, 0, 5, 5, 0, -5, 5, 0.1, -5, 5, 0.1, 5, 5, 0.1, -5, 7, 0.1, 5, 5, 0.1, 5, 5, 0.1, -5, 7, 0.1, -5, 7, 0.1, 5, 7, 0.1, -5, 7, 0, 5, 7, 0.1, 5, 7, 0.1, -5, 7, 0, -5, 7, 0, 5)
 
 [node name="street_straight" instance=ExtResource("1_c816q")]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Sidewalk" index="0"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Sidewalk/StaticBody3D" index="0"]
-shape = SubResource("ConcavePolygonShape3D_mh7nj")
+shape = SubResource("ConcavePolygonShape3D_ybccn")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Street" index="0"]
 
@@ -26,4 +26,4 @@ shape = SubResource("ConcavePolygonShape3D_qo0m1")
 [node name="StaticBody3D" type="StaticBody3D" parent="Sidewalk_001" index="0"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Sidewalk_001/StaticBody3D" index="0"]
-shape = SubResource("ConcavePolygonShape3D_3by8n")
+shape = SubResource("ConcavePolygonShape3D_tq038")

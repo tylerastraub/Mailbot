@@ -1,0 +1,150 @@
+[gd_scene load_steps=5 format=3 uid="uid://cpij5qt87lv05"]
+
+[ext_resource type="Script" path="res://src/UI/throw_meter.gd" id="1_7ajfa"]
+[ext_resource type="Script" path="res://src/UI/boost_meter.gd" id="2_u2blp"]
+[ext_resource type="Script" path="res://src/UI/target_lock.gd" id="3_1dgpn"]
+[ext_resource type="PackedScene" uid="uid://hbqg4p4bj1ig" path="res://src/UI/reticle.tscn" id="4_msben"]
+
+[node name="UI" type="CanvasLayer"]
+
+[node name="Crosshair" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Outline" type="ColorRect" parent="Crosshair"]
+z_index = -1
+layout_mode = 0
+offset_right = 4.0
+offset_bottom = 4.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Center" type="ColorRect" parent="Crosshair"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ThrowMeter" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_7ajfa")
+
+[node name="Meter" type="ColorRect" parent="ThrowMeter"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5.0
+offset_top = -40.0
+offset_right = 5.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.821911, 2.62313e-06, 7.70092e-07, 1)
+
+[node name="Sweetspot" type="ColorRect" parent="ThrowMeter"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5.0
+offset_right = 5.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 1, 0, 1)
+
+[node name="Marker" type="ColorRect" parent="ThrowMeter"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -9.0
+offset_top = 38.0
+offset_right = 9.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BoostMeter" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_u2blp")
+
+[node name="Meter" type="ColorRect" parent="BoostMeter"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -48.0
+offset_right = 150.0
+offset_bottom = -44.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="Threshold" type="ColorRect" parent="BoostMeter/Meter"]
+layout_mode = 0
+offset_top = -4.0
+offset_right = 2.0
+offset_bottom = 8.0
+mouse_filter = 2
+color = Color(0.716296, 0.716296, 0.716296, 1)
+
+[node name="Marker" type="ColorRect" parent="BoostMeter/Meter"]
+layout_mode = 0
+offset_top = -8.0
+offset_right = 1.0
+offset_bottom = 12.0
+mouse_filter = 2
+
+[node name="TargetLock" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("3_1dgpn")
+reticle_scene = ExtResource("4_msben")

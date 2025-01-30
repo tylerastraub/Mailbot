@@ -1,8 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://b8ldevxvphcjq"]
+[gd_scene load_steps=6 format=3 uid="uid://b8ldevxvphcjq"]
 
 [ext_resource type="PackedScene" uid="uid://cam3qob62yppx" path="res://res/models/delivery/package.glb" id="1_k5jhu"]
 [ext_resource type="Script" path="res://src/Delivery/package.gd" id="2_8fl7n"]
-[ext_resource type="Shader" path="res://src/Delivery/outline.gdshader" id="3_clrge"]
+[ext_resource type="Material" uid="uid://bnvkg7n0w0ika" path="res://res/materials/outline_material.tres" id="2_o5mkw"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_wwiqu"]
 friction = 0.5
@@ -11,14 +11,7 @@ bounce = 0.2
 [sub_resource type="BoxShape3D" id="BoxShape3D_h2kaj"]
 size = Vector3(0.56, 0.36, 0.45)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0lj2l"]
-render_priority = 0
-shader = ExtResource("3_clrge")
-shader_parameter/outline_color = Color(1, 1, 1, 1)
-shader_parameter/outline_width = 3.0
-shader_parameter/enabled = true
-
-[node name="RigidBody3D" type="RigidBody3D"]
+[node name="Package" type="RigidBody3D"]
 collision_layer = 8
 collision_mask = 15
 physics_material_override = SubResource("PhysicsMaterial_wwiqu")
@@ -30,7 +23,7 @@ shape = SubResource("BoxShape3D_h2kaj")
 [node name="Mesh" parent="." instance=ExtResource("1_k5jhu")]
 
 [node name="Cube" parent="Mesh" index="0"]
-material_overlay = SubResource("ShaderMaterial_0lj2l")
+material_overlay = ExtResource("2_o5mkw")
 
 [node name="PackageArea" type="Area3D" parent="." node_paths=PackedStringArray("collision", "mesh", "rigidbody")]
 collision_layer = 2

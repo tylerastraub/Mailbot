@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://cknowkwykxwvf"]
+
+[ext_resource type="Script" path="res://src/Generic/ledge_check.gd" id="1_75qcy"]
+
+[node name="LedgeCheck" type="Node3D"]
+script = ExtResource("1_75qcy")
+
+[node name="LedgeCheckLowerLeft" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+target_position = Vector3(-0.25, -0.25, 0)
+
+[node name="LedgeCheckUpperLeft" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.25, 0)
+target_position = Vector3(-0.25, -0.25, 0)
+
+[node name="LedgeHeightCheckLeft" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0.25, -0.25)
+target_position = Vector3(0, -0.25, 0)
+
+[node name="LedgeCheckLowerRight" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+target_position = Vector3(0.25, -0.25, 0)
+
+[node name="LedgeCheckUpperRight" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.25, 0)
+target_position = Vector3(0.25, -0.25, 0)
+
+[node name="LedgeHeightCheckRight" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0.25, -0.25)
+target_position = Vector3(0, -0.25, 0)

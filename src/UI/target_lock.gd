@@ -10,9 +10,7 @@ var reticles : Dictionary
 func _ready() -> void:
 	SignalManager.npcTargeting.connect(_on_npc_targeting)
 	SignalManager.npcStopTarget.connect(_on_npc_stop_target)
-
-func _physics_process(_delta: float) -> void:
-	pass
+	SignalManager.playerSpawned.connect(_on_player_spawned)
 
 func _on_npc_targeting(npcs: Array) -> void:
 	for pair in npcs:
@@ -22,10 +20,13 @@ func _on_npc_targeting(npcs: Array) -> void:
 				add_child(reticles[pair[0]])
 			var percent : float = (pair[1] - 1.0) / 2.0
 			var aabb : AABB = pair[0].find_children("*", "MeshInstance3D").front().get_aabb()
-			reticles[pair[0]].adjust_reticle(camera.unproject_position(pair[0].global_position + aabb.get_center() - Vector3(0.0, 0.5, 0.0)), percent)
+			reticles[pair[0]].adjust_reticle(camera.unproject_position(pair[0].global_position + aabb.get_center()), percent)
 
 func _on_npc_stop_target(npc: NPC) -> void:
 	if reticles.has(npc):
 		remove_child(reticles[npc])
 		reticles[npc].queue_free()
 		reticles.erase(npc)
+
+func _on_player_spawned(player: Player):
+	camera = player.camera

@@ -6,7 +6,7 @@ extends Camera3D
 var selected : Node3D = null
 
 const RAY_LENGTH = 14
-const MAX_PACKAGE_DISTANCE = 6.5
+const MAX_PACKAGE_DISTANCE = 7.5
 
 func _ready() -> void:
 	pass
@@ -19,17 +19,21 @@ func _input(_event: InputEvent) -> void:
 		SignalManager.emit_signal("packageHoverOff", null)
 	elif result.collider != selected:
 		if result.collider is Mailbox:
-			selected = result.collider
 			SignalManager.emit_signal("packageHoverOff", null)
-			SignalManager.emit_signal("mailboxHoverOn", result.collider)
+			if result.collider.open:
+				selected = result.collider
+				SignalManager.emit_signal("mailboxHoverOn", result.collider)
 		elif result.collider is Package and global_position.distance_to(result.collider.global_position) < MAX_PACKAGE_DISTANCE:
 			selected = result.collider
 			SignalManager.emit_signal("mailboxHoverOff", null)
 			SignalManager.emit_signal("packageHoverOn", result.collider)
 
 func make_raycast() -> Dictionary:
-	var from = project_ray_origin(get_viewport().size / 2)
-	var to = from + project_ray_normal(get_viewport().size / 2) * RAY_LENGTH
+	var center : Vector2 = Vector2(576, 324)
+	#var from = project_ray_origin(get_viewport().size / 2)
+	#var to = from + project_ray_normal(get_viewport().size / 2) * RAY_LENGTH
+	var from = project_ray_origin(center)
+	var to = from + project_ray_normal(center) * RAY_LENGTH
 	var space = get_world_3d().direct_space_state
 	var ray_query = PhysicsRayQueryParameters3D.new()
 	ray_query.from = from

@@ -18,7 +18,6 @@ config/icon="res://icon.svg"
 [autoload]
 
 SignalManager="*res://src/signal_manager.gd"
-DebugDraw="*res://addons/zylann.debug_draw/debug_draw.gd"
 
 [display]
 
@@ -118,3 +117,10 @@ interact={
 
 common/physics_ticks_per_second=50
 3d/physics_engine="JoltPhysics3D"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+anti_aliasing/quality/screen_space_aa=1
+anti_aliasing/quality/use_taa=true

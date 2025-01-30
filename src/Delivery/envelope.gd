@@ -46,6 +46,9 @@ func _on_throw_envelope(envelope: Node3D, thrower: Node3D, throw_target: Node3D,
 		thrown = true
 		thrown_by = thrower
 		target = throw_target
+		if target is Mailbox:
+			target.open = false
+			SignalManager.mailboxHoverOff.emit(null)
 		target_offset = throw_target_offset
 		global_position.y = thrower.global_position.y + 1.5
 

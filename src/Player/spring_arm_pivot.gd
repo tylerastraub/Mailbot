@@ -39,10 +39,3 @@ func _physics_process(_delta):
 	else:
 		spring_arm.spring_length = lerpf(spring_arm.spring_length, default_spring_length, CAMERA_BLEND * 5)
 		camera.fov = lerp(camera.fov, normal_fov, CAMERA_BLEND)
-	
-	if owner.is_throwing and owner.throw_target != null:
-		pass
-		# todo: https://www.youtube.com/watch?v=lbUdYEdraDs
-		#var dir = spring_arm.global_position.direction_to(owner.throw_target.global_position)
-		#rotation.y = -dir.y
-		#spring_arm.rotation.x = -dir.x

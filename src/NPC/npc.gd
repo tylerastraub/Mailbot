@@ -15,14 +15,10 @@ const ANIMATION_BLEND : float = 20.0
 @export var gravity = 18.0
 
 var is_alive : bool = true
-
-# todo: create random movement, add death code (add ragdoll physics
-# and blood particles once NPC models are done
+var nav_target : NPCTargetArea = null
 
 func _ready() -> void:
 	nav = $NavigationAgent3D
-	set_nav_target(Vector3(20, 0, -41))
-	
 	SignalManager.connect("envelopeDelivered", _on_envelope_delivered)
 	# wait for nav agent to sync map
 	set_physics_process(false)
@@ -51,10 +47,13 @@ func _physics_process(delta: float) -> void:
 	
 	apply_floor_snap()
 	move_and_slide()
+	$Mesh/LedgeCheck.check_for_stairs(self)
 	animate(delta)
 
-func set_nav_target(nav_target: Vector3):
-	nav.target_position = nav_target
+func set_nav_target(target: NPCTargetArea):
+	nav_target = target
+	if nav_target == null: return
+	nav.target_position = nav_target.global_position
 
 func _on_envelope_delivered(_deliverer: Node3D, envelope: Envelope, recipient: Node3D):
 	if recipient == self:
@@ -64,13 +63,15 @@ func kill_npc(force: Vector3):
 	is_alive = false
 	$AnimationTree.active = false
 	$CollisionShape3D.disabled = true
-	#for bone in $Mesh/Armature/Skeleton3D.get_parentless_bones():
-		#$Mesh/Armature/Skeleton3D.set_bone_enabled(bone, false)
-	bone_simulator.active = true
-	bone_simulator.physical_bones_start_simulation()
-	bone_simulator.find_child("Physical Bone Pelvis").apply_central_impulse(force)
-	collision_layer = 16
-	velocity = force
+	$Mesh/LedgeCheck.queue_free()
+	if ProjectSettings.get_setting("render/compatibility_mode") == false:
+		bone_simulator.active = true
+		bone_simulator.physical_bones_start_simulation()
+		bone_simulator.find_child("Physical Bone Pelvis").apply_central_impulse(force)
+		collision_layer = 16
+		velocity = force
+	else:
+		visible = false
 	
 func animate(delta: float):
 	var blend_target: float = 1.0 if Vector3(velocity.x, 0.0, velocity.z).length() > 0 else 0.0
