@@ -20,4 +20,5 @@ func _on_body_entered(body: Node3D):
 
 func _on_area_entered(area: Area3D):
 	if area is Package:
-		SignalManager.packageDelivered.emit(area)
+		if area.destination == self:
+			SignalManager.packageDelivered.emit(area)

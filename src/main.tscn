@@ -51,5 +51,3 @@ light_color = Color(0.980392, 0.94902, 0.862745, 1)
 light_energy = 0.6
 shadow_enabled = true
 sky_mode = 1
-
-[node name="Level" type="Node3D" parent="."]

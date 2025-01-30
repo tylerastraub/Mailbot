@@ -75,7 +75,6 @@ func _ready() -> void:
 	laser.hide()
 
 func _input(event: InputEvent) -> void:
-	first_input = true
 	if event.is_action_released("pause"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
@@ -84,15 +83,15 @@ func _input(event: InputEvent) -> void:
 	raycast_result = camera.make_raycast()
 
 func _physics_process(delta):
-	if first_input == false:
-		global_position = Vector3(0.0, 0.0, 0.0)
 	#throwing
-	if Input.is_action_just_pressed("throw") and is_on_floor():
+	if Input.is_action_just_pressed("throw"):
 		if package_child != null:
 			throw_package()
+			ticks_since_last_boost = boost_timeout
 		elif is_throwing:
 			throw_envelope()
-		elif raycast_result.size() > 0:
+			ticks_since_last_boost = boost_timeout
+		elif raycast_result.size() > 0 and is_on_floor():
 			if raycast_result.collider is Mailbox:
 				if raycast_result.collider.open:
 					throw_target = raycast_result.collider
@@ -100,6 +99,7 @@ func _physics_process(delta):
 	if is_throwing:
 		if throw_timer >= THROW_TIME_LIMIT or not is_on_floor():
 			throw_envelope()
+			ticks_since_last_boost = boost_timeout
 	
 	#laser stuff
 	if Input.is_action_just_pressed("interact") and is_on_floor() and is_throwing == false and raycast_result.size() > 0:
@@ -175,7 +175,7 @@ func move_player(delta: float):
 	
 	velocity.y -= gravity * delta
 	
-	if Input.is_action_just_pressed("boost") and ticks_since_last_boost >= boost_timeout:
+	if Input.is_action_pressed("boost") and ticks_since_last_boost >= boost_timeout:
 		boost = true
 	if boost_amount <= 0 or not Input.is_action_pressed("boost"):
 		if boost_amount <= 0 and boost:

@@ -1,5 +1,7 @@
 extends Node3D
 
+class_name Level
+
 @export var NPC_scene : PackedScene
 @export var max_npc_count : int = 0
 
@@ -21,7 +23,6 @@ func _ready() -> void:
 	packages = find_children("*", "Package")
 	spawn_npcs()
 	set_package_destinations()
-	find_children("*", "Player").front().global_position = Vector3(0.0, 0.0, 0.0)
 
 func _physics_process(_delta: float) -> void:
 	for npc in alive_npcs:
