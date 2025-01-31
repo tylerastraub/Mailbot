@@ -19,7 +19,7 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _unhandled_input(event):
-	if event is InputEventMouseMotion and not owner.is_throwing:
+	if event is InputEventMouseMotion and not owner.is_throwing and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		rotate_y(-event.relative.x * 0.005 * mouse_sensitivity)
 		spring_arm.rotate_x(-event.relative.y * 0.005 * mouse_sensitivity)
 		spring_arm.rotation.x = clamp(spring_arm.rotation.x, -5 * PI / 12, PI/3)

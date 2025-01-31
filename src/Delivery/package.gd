@@ -15,7 +15,7 @@ func _ready() -> void:
 	SignalManager.packageHoverOff.connect(_on_ray_exited)
 	SignalManager.packageDelivered.connect(_on_package_delivered)
 	body_entered.connect(_on_body_entered)
-	if ProjectSettings.get_setting("render/compatibility_mode") == false:
+	if ProjectSettings.get_setting("rendering/renderer/rendering_method") == "forward_plus":
 		mesh.get("material_overlay").set("shader_parameter/outline_width", outline_width)
 		mesh.get("material_overlay").set("shader_parameter/enabled", false)
 	else:
@@ -27,7 +27,7 @@ func pick_up():
 	collision.disabled = true
 	rigidbody.freeze = true
 	SignalManager.packagePickedUp.emit(self)
-	if ProjectSettings.get_setting("render/compatibility_mode") == false:
+	if ProjectSettings.get_setting("rendering/renderer/rendering_method") == "forward_plus":
 		mesh.get("material_overlay").set("shader_parameter/enabled", false)
 	
 func get_thrown():
@@ -36,17 +36,17 @@ func get_thrown():
 	collision.disabled = false
 	rigidbody.freeze = false
 	rigidbody.apply_central_force(Vector3(500.0, 70.0, 0.0).rotated(Vector3.UP, rigidbody.global_rotation.y))
-	if ProjectSettings.get_setting("render/compatibility_mode") == false:
+	if ProjectSettings.get_setting("rendering/renderer/rendering_method") == "forward_plus":
 		mesh.get("material_overlay").set("shader_parameter/enabled", true)
 
 func _on_ray_entered(package: Package):
 	if package == self:
-		if ProjectSettings.get_setting("render/compatibility_mode") == false:
+		if ProjectSettings.get_setting("rendering/renderer/rendering_method") == "forward_plus":
 			mesh.get("material_overlay").set("shader_parameter/enabled", true)
 	
 func _on_ray_exited(package: Package):
 	if package != self:
-		if ProjectSettings.get_setting("render/compatibility_mode") == false:
+		if ProjectSettings.get_setting("rendering/renderer/rendering_method") == "forward_plus":
 			mesh.get("material_overlay").set("shader_parameter/enabled", false)
 
 func _on_body_entered(body: Node):

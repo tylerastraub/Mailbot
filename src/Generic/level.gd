@@ -15,7 +15,7 @@ var packages : Array
 
 func _ready() -> void:
 	SignalManager.npcArrived.connect(_on_npc_arrived)
-	SignalManager.envelopeDelivered.connect(_on_envelope_delivered)
+	SignalManager.mailboxClosed.connect(_on_mailbox_closed)
 	SignalManager.packageDelivered.connect(_on_package_delivered)
 	SignalManager.packagePickedUp.connect(_on_package_picked_up)
 	npc_target_areas = find_children("*", "NPCTargetArea")
@@ -23,6 +23,11 @@ func _ready() -> void:
 	packages = find_children("*", "Package")
 	spawn_npcs()
 	set_package_destinations()
+
+func set_tutorial_text(text: String):
+	var tutorials : Array = find_children("*", "TutorialWindow")
+	for tutorial in tutorials:
+		tutorial.set_text(text)
 
 func _physics_process(_delta: float) -> void:
 	for npc in alive_npcs:
@@ -54,7 +59,7 @@ func _on_npc_arrived(npc: NPC):
 	alive_npcs.erase(npc)
 	npc.queue_free()
 
-func _on_envelope_delivered(_deliverer: Node3D, _envelope: Envelope, _recipient: Node3D):
+func _on_mailbox_closed():
 	mailboxes_closed += 1
 	if mailboxes_closed >= mailboxes.size():
 		SignalManager.levelComplete.emit()

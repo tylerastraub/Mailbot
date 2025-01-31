@@ -26,4 +26,4 @@ func _on_envelope_delivered(_deliverer: Node3D, _envelope: Envelope, recipient: 
 		$Mesh/AnimationPlayer.current_animation = "Close"
 		$Mesh/AnimationPlayer.speed_scale = 2.0
 		open = false
-		print("received a letter!")
+		SignalManager.mailboxClosed.emit()

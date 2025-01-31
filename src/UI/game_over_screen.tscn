@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqi38vp83a2e4"]
+
+[ext_resource type="Script" path="res://src/UI/game_over_screen.gd" id="1_kwn6g"]
+
+[node name="GameOverScreen" type="CanvasLayer"]
+script = ExtResource("1_kwn6g")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -34.5
+offset_bottom = 34.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+bbcode_enabled = true
+text = "[center][font size=48] GAME OVER
+[center][font size=24]Press 'F' to restart level"
+fit_content = true

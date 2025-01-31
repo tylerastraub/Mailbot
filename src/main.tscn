@@ -33,6 +33,7 @@ adjustment_color_correction = SubResource("GradientTexture1D_jxm3i")
 [sub_resource type="Compositor" id="Compositor_koqs3"]
 
 [node name="main" type="Node3D"]
+process_mode = 3
 script = ExtResource("1_2rr6o")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -51,3 +52,6 @@ light_color = Color(0.980392, 0.94902, 0.862745, 1)
 light_energy = 0.6
 shadow_enabled = true
 sky_mode = 1
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+volume_db = -12.0

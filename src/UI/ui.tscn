@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://cpij5qt87lv05"]
+[gd_scene load_steps=7 format=3 uid="uid://cpij5qt87lv05"]
 
 [ext_resource type="Script" path="res://src/UI/throw_meter.gd" id="1_7ajfa"]
 [ext_resource type="Script" path="res://src/UI/boost_meter.gd" id="2_u2blp"]
 [ext_resource type="Script" path="res://src/UI/target_lock.gd" id="3_1dgpn"]
 [ext_resource type="PackedScene" uid="uid://hbqg4p4bj1ig" path="res://src/UI/reticle.tscn" id="4_msben"]
+[ext_resource type="Texture2D" uid="uid://c6ea2jxvdmmp" path="res://res/textures/npc_icon.png" id="5_5h1na"]
+[ext_resource type="Script" path="res://src/UI/kills.gd" id="5_fbk5j"]
 
 [node name="UI" type="CanvasLayer"]
 
@@ -148,3 +150,20 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("3_1dgpn")
 reticle_scene = ExtResource("4_msben")
+
+[node name="Kills" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("5_fbk5j")
+
+[node name="Icon" type="TextureRect" parent="Kills"]
+visible = false
+texture_repeat = 2
+layout_mode = 0
+offset_right = 75.0
+offset_bottom = 75.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_5h1na")
+stretch_mode = 1

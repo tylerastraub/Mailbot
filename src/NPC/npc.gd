@@ -64,7 +64,7 @@ func kill_npc(force: Vector3):
 	$AnimationTree.active = false
 	$CollisionShape3D.disabled = true
 	$Mesh/LedgeCheck.queue_free()
-	if ProjectSettings.get_setting("render/compatibility_mode") == false:
+	if ProjectSettings.get_setting("rendering/renderer/rendering_method") == "forward_plus":
 		bone_simulator.active = true
 		bone_simulator.physical_bones_start_simulation()
 		bone_simulator.find_child("Physical Bone Pelvis").apply_central_impulse(force)
@@ -72,6 +72,7 @@ func kill_npc(force: Vector3):
 		velocity = force
 	else:
 		visible = false
+	SignalManager.npcKilled.emit()
 	
 func animate(delta: float):
 	var blend_target: float = 1.0 if Vector3(velocity.x, 0.0, velocity.z).length() > 0 else 0.0

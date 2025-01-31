@@ -18,7 +18,7 @@ func _on_npc_targeting(npcs: Array) -> void:
 			if reticles.has(pair[0]) == false:
 				reticles[pair[0]] = reticle_scene.instantiate()
 				add_child(reticles[pair[0]])
-			var percent : float = (pair[1] - 1.0) / 2.0
+			var percent : float = (pair[1] - 0.5) / 2.0
 			var aabb : AABB = pair[0].find_children("*", "MeshInstance3D").front().get_aabb()
 			reticles[pair[0]].adjust_reticle(camera.unproject_position(pair[0].global_position + aabb.get_center()), percent)
 

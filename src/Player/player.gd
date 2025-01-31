@@ -21,7 +21,7 @@ var throw_sweetspot_upper_bounds : float = 0.5
 var throw_sweetspot_max_length : float = 0.4
 const THROW_TIME_LIMIT : float = 2.0
 const THROW_SWEETSPOT_END_BUFFER : float = 0.1
-const ERRANT_THROW_MAX_RANGE : float = 20.0
+const ERRANT_THROW_MAX_RANGE : float = 30.0
 
 var package_child : Package = null
 var envelope_child : Envelope = null
@@ -30,8 +30,8 @@ var raycast_result : Dictionary
 
 var npc_targets : Array
 var npc_targets_remove_queue : Array
-var npc_lock_minimum : float = 1.0 # number of seconds for lock on status to appear
-var npc_lock_maximum : float = 3.0 # number of seconds of locking on before killing
+var npc_lock_minimum : float = 0.5 # number of seconds for lock on status to appear
+var npc_lock_maximum : float = 2.0 # number of seconds of locking on before killing
 
 var is_on_stairs : bool = false
 
@@ -55,7 +55,7 @@ var is_on_stairs : bool = false
 
 @export_group("Boost settings")
 @export var jump_boost_threshold : float = 0.25 # Minimum boost required to start jumping.
-@export var boost_drain : float = 0.005 # How fast boost drains charge.
+@export var boost_drain : float = 0.001 # How fast boost drains charge.
 @export var boost_recharge : float = 0.004 # How fast boost recharges.
 @export var boost_timeout : float = 2.0 # Number of seconds boost won't charge if completely drained.
 
@@ -66,23 +66,27 @@ var is_on_stairs : bool = false
 const LASER_BASE_WIDTH : float = 0.06
 var laser_timer = 0.0
 
-var first_input : bool = false
+var game_over : bool = false
 
 func _ready() -> void:
 	SignalManager.playerSpawned.emit(self)
+	SignalManager.gameOver.connect(_on_game_over)
+	SignalManager.packageDelivered.connect(play_delivery_sound)
+	SignalManager.mailboxClosed.connect(play_mailbox_closed_sound)
 	$Mesh/ViewCone.connect("body_entered", _on_body_entered)
 	$Mesh/ViewCone.connect("body_exited", _on_body_exited)
 	laser.hide()
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_released("pause"):
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
-		get_tree().quit()
+	if (Input.mouse_mode != Input.MOUSE_MODE_CAPTURED) and event is InputEventMouseButton: 
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 	raycast_result = camera.make_raycast()
 
 func _physics_process(delta):
+	if game_over:
+		animate(delta)
+		return
 	#throwing
 	if Input.is_action_just_pressed("throw"):
 		if package_child != null:
@@ -166,6 +170,7 @@ func throw_envelope():
 	envelope_child.reparent(get_parent())
 	envelope_child = null
 	animation_tree.set("parameters/ThrowBlend/blend_amount", -1.0)
+	$EnvelopeThrowSoundPlayer.play()
 
 func move_player(delta: float):
 	var move_direction : Vector3 = Vector3.ZERO
@@ -221,6 +226,9 @@ func move_player(delta: float):
 		snap_vector = Vector3.DOWN
 
 func animate(delta):
+	if game_over:
+		$AnimationTree.set("parameters/GameOverBlend/blend_amount", lerpf(animation_tree.get("parameters/GameOverBlend/blend_amount"), 1.0, delta * ANIMATION_BLEND / 5.0))
+		return
 	if is_on_floor() or is_on_stairs:
 		animation_tree.set("parameters/GroundAirBlend/blend_amount", lerpf(animation_tree.get("parameters/GroundAirBlend/blend_amount"), 0.0, delta * ANIMATION_BLEND))
 		if is_throwing:
@@ -272,6 +280,7 @@ func shoot_laser(target: NPC):
 	target.kill_npc(global_position.direction_to(target.global_position) * laser.laser_strength + Vector3(0.0, 20.0, 0.0))
 	laser.burn_target()
 	laser.show()
+	$LaserSoundPlayer.play()
 
 func add_npc_target(npc: NPC):
 	if npc.is_alive and npc_targets.has(npc) == false:
@@ -295,6 +304,9 @@ func throw_package():
 	package_child.get_thrown()
 	package_child = null
 
+func play_delivery_sound(_package: Package):
+	$PackageDeliveredSoundPlayer.play()
+
 func _on_body_entered(body: Node3D):
 	if body is NPC:
 		add_npc_target(body)
@@ -302,3 +314,9 @@ func _on_body_entered(body: Node3D):
 func _on_body_exited(body: Node3D):
 	if body is NPC:
 		remove_npc_target(body)
+
+func _on_game_over():
+	game_over = true
+
+func play_mailbox_closed_sound():
+	$MailboxClosedSoundPlayer.play()

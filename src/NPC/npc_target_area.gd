@@ -10,7 +10,7 @@ func _ready() -> void:
 	$PackageDeliveryMesh.visible = false
 
 func _physics_process(delta: float) -> void:
-	$PackageDeliveryMesh.get_active_material(0).albedo_color = Color(0.1 + sin(timer) / 2.0, 1.0, 0.1 + sin(timer) / 2.0, 0.3)
+	$PackageDeliveryMesh.get_active_material(0).albedo_color = Color(0.1 + sin(timer) / 2.0, 1.0, 0.1 + sin(timer) / 2.0, 0.5)
 	timer += delta * 5
 
 func _on_body_entered(body: Node3D):

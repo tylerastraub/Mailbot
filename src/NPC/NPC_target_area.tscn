@@ -7,7 +7,7 @@ size = Vector3(1, 2, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uyx6h"]
 transparency = 1
-albedo_color = Color(0, 1, 0, 0.313726)
+albedo_color = Color(0, 1, 0, 0.509804)
 
 [sub_resource type="BoxMesh" id="BoxMesh_7axed"]
 material = SubResource("StandardMaterial3D_uyx6h")
